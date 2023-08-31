@@ -1,4 +1,5 @@
 import requests
+import time
 
 async def get_wiki_page_existence(wiki_page_url):
     try:
@@ -13,3 +14,26 @@ async def get_wiki_page_existence(wiki_page_url):
         return f"{wiki_page_url} - {page_status}"
     except Exception as error:
         return f"{wiki_page_url} - error: {str(error)}"
+    
+async def main():
+    print("Executando de forma sequencial:")
+
+    def gerar_wiki_url(i):
+        return f"https://en.wikipedia.org/wiki/{i + 1}"
+
+    wiki_page_urls = [gerar_wiki_url(i) for i in range(50)]
+
+    start_time = time.time()
+
+    for url in wiki_page_urls:
+        print(await get_wiki_page_existence(url))
+
+    end_time = time.time()
+
+    elapsed_time = end_time - start_time
+
+    print(f"Tempo sequencial: {elapsed_time:.2f}s")
+
+if __name__ == "__main__":
+    import asyncio
+    asyncio.run(main())
